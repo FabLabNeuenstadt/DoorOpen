@@ -1,6 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266HTTPClient.h>
+#include "config.h"
 
 int inputPin = 5; // D1
 
@@ -9,15 +10,12 @@ int seconds_until_trigger = 5;
 bool door_open = false;
 unsigned long last_open_trigger = 0;
 
-const char* ssid = "***";
-const char* password = "***";
-
-const char* url_open = "http://***:***@door.fablab-neuenstadt.de/open";
-const char* url_close = "http://***:***@door.fablab-neuenstadt.de/close";
+const char* url_open = "http://URL_USER:URL_PASS@door.fablab-neuenstadt.de/open";
+const char* url_close = "http://URL_USER:URL_PASS@door.fablab-neuenstadt.de/close";
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
   Serial.println("");
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);

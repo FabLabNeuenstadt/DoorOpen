@@ -1,0 +1,11 @@
+#ifndef DOOR_OPEN_CONFIG
+
+#define DOOR_OPEN_CONFIG 1
+
+#define WIFI_SSID ssid
+#define WIFI_PASS pass
+
+#define URL_USER user
+#define URL_PASS pass
+
+#endif
