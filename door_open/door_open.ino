@@ -48,8 +48,6 @@ void request(const char* url) {
 void loop() {
   unsigned long now = millis();
   bool sensor_status = digitalRead(inputPin);
-  //Serial.print("Sensor status:");
-  //Serial.println(sensor_status);
   if ((!door_open) && (sensor_status)) {
     Serial.println("We are open! :-D");
     last_open_trigger = now;
@@ -61,7 +59,6 @@ void loop() {
     last_open_trigger = now;
   }
 
-//  if ((door_open) && (now > (last_open_trigger + minutes_until_trigger * 60 * 1000))) {
   if ((door_open) && (now > (last_open_trigger + seconds_until_trigger * 1000))) {
     request(url_open);
     last_open_trigger = now; // To re-trigger after a few minutes
