@@ -46,6 +46,11 @@ void request(const char* url) {
 }
 
 void loop() {
+  // reboot if not connected to wifi
+  if (WiFi.status() == WL_DISCONNECTED) {
+    ESP.reset();
+  }
+  
   unsigned long now = millis();
   bool sensor_status = digitalRead(inputPin);
   if ((!door_open) && (sensor_status)) {
