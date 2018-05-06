@@ -10,6 +10,9 @@ int seconds_until_trigger = 5;
 bool door_open = false;
 unsigned long last_open_trigger = 0;
 
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 50;
+
 const char* url_open = "http://URL_USER:URL_PASS@door.fablab-neuenstadt.de/open";
 const char* url_close = "http://URL_USER:URL_PASS@door.fablab-neuenstadt.de/close";
 
@@ -53,15 +56,20 @@ void loop() {
   
   unsigned long now = millis();
   bool sensor_status = digitalRead(inputPin);
-  if ((!door_open) && (sensor_status)) {
-    Serial.println("We are open! :-D");
-    last_open_trigger = now;
-    door_open = true;
-  } else if ((door_open) && (!sensor_status)) {
-    door_open = false;
-    Serial.println("We are closed! :-(");
-    request(url_close);
-    last_open_trigger = now;
+  if (door_open != sensor_status) {
+    lastDebounceTime = now;
+  }
+  if ((now - lastDebounceTime) > debounceDelay) {
+    if ((!door_open) && (sensor_status)) {
+      Serial.println("We are open! :-D");
+      last_open_trigger = now;
+      door_open = true;
+    } else if ((door_open) && (!sensor_status)) {
+      door_open = false;
+      Serial.println("We are closed! :-(");
+      request(url_close);
+      last_open_trigger = now;
+    }
   }
 
   if ((door_open) && (now > (last_open_trigger + seconds_until_trigger * 1000))) {
